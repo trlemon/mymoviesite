@@ -1,0 +1,46 @@
+{% load static %}
+
+<div>
+    <div style="width: 60%; margin: auto;">
+        <h1>Movie Listings @ GV Cinema</h1>
+        <input type="text" id="searchInput" placeholder="Search movies...">
+        <hr />
+        <h2>Popular Movies this Month</h2>
+        <div>
+            {% for movie in movie_list %}
+            <div class="movie-card"
+                style="width: 200px; display: inline-block; vertical-align: top; margin-bottom: 8px; padding-right: 12px; ">
+                <div style="width: 200px; height: 300px;">
+                    <a href="{% url 'movie-details' movie.id %}"><img src="{% static movie.imgPath %}" width="100%"
+                            height="100%" style="object-fit: cover;"></a>
+                </div>
+                <H2 style="margin-top: 4px;">{{ movie.name }}</H2>
+                <p>{{ movie.duration }} min</p>
+                <p>User Rating: {{ movie.userRating }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript search bar -->
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const contentList = document.querySelectorAll('.movie-card');
+
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < contentList.length; i++) {
+            const heading = contentList[i].innerText.toLowerCase();
+            if (heading) {
+                const headingText = contentList[i].querySelector('h2');
+                if (heading.includes(searchTerm)) {
+                    contentList[i].style.display = 'inline-block';
+                } else {
+                    contentList[i].style.display = 'none';
+                }
+            }
+        }
+    });
+</script>
